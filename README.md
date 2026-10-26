@@ -4,8 +4,8 @@ Three free, ready-to-edit one-page websites for a portfolio or personal site: **
 
 | Neon Noir | Thermal | 16-Bit Zone |
 |---|---|---|
-| ![Neon Noir: a glowing name over a rainy neon night city](screenshots/noir.jpg) | ![Thermal: the same site in heat vision](screenshots/thermal.jpg) | ![16-Bit Zone: a pixel title screen with checkered hills](screenshots/16-bit-zone.jpg) |
-| A rainy night city with searchlights, flying cars and neon, fading to a dusty amber view further down. | Heat vision for Neon Noir: a heat-map filter, scan lines, a three-dot targeting laser, lock-on brackets and original glyph numerals. | A 16-bit console-game title screen with pixel lettering, scrolling scenery, a score display and gold records to collect. |
+| ![Neon Noir: a glowing name over a rainy neon night city](screenshots/noir.jpg) | ![Thermal: the same site as a black and red machine display](screenshots/thermal.jpg) | ![16-Bit Zone: a pixel title screen with checkered hills](screenshots/16-bit-zone.jpg) |
+| A rainy night city with searchlights, flying cars and neon, fading to a dusty amber view further down. | A black-and-red machine HUD for Neon Noir: a wall of dark gunmetal machinery, riveted metal panels, glowing red segment glyphs in display windows, a wrist device and a three-dot targeting laser. | A 16-bit console-game title screen with pixel lettering, scrolling scenery, a score display and gold records to collect. |
 
 **Live demo:** the [gallery page](https://bri-an-pmp.github.io/retro-site-themes/) links to all three.
 
@@ -52,7 +52,7 @@ To preview on your computer, open Terminal in the template folder, run `python3 
 ## Inside the templates
 
 - **Neon Noir:** the skyline layers are SVGs drawn by `tools/city.py`, so you can regenerate them with different settings. Rain and flying cars are drawn on a canvas. The parallax responds to the mouse and to scrolling.
-- **Thermal:** an SVG gradient-map filter (`#thermal-map` in `index.html`) recolors the scenery and photos by brightness, from cold purple to hot yellow-white. The glyphs are drawn in `js/theme.js`: each digit is a slanted spine with four marks, a hook for a 1 bit and a dot for a 0 bit. The targeting dots only appear with a mouse, and never when reduced motion is on.
+- **Thermal:** the machine background is `assets/machine.svg`, a tileable panel drawn by `tools/machine.py` (run it with a different number, e.g. `python3 tools/machine.py 12`, for a new layout). Photos get a red-and-black duotone filter (`#red-duotone` in `index.html`). The glyphs are drawn in `js/theme.js`: each digit is a slanted spine with four glowing bars, a long bar on the right for a 1 bit and a short bar on the left for a 0 bit. The targeting dots only appear with a mouse, and never when reduced motion is on.
 - **16-Bit Zone:** the scenery is SVG and CSS, the soundtrack and effects use the Web Audio API, and the score display counts the gold records a visitor collects.
 
 ## Licenses
@@ -74,7 +74,7 @@ Tres sitios web de una página, gratuitos y listos para editar, para un portafol
 ### Qué incluye cada plantilla
 
 - **Inglés y español:** un botón cambia todo el texto de la página. El español usa *usted*.
-- **Menú de temas** arriba a la derecha: Neón Noir y Térmico cambian en la misma página; Zona 16 bits abre su propia página.
+- **Menú de temas** arriba a la derecha: Neón Noir y Térmico (una máquina en negro y rojo) cambian en la misma página; Zona 16 bits abre su propia página.
 - **Banda sonora original**, creada en vivo en el navegador (sin archivos de audio), y efectos de sonido opcionales. Ambos están apagados hasta que el visitante los activa.
 - **Secciones listas para completar:** carrera o CV, proyectos tomados en vivo de GitHub, servicios, enlaces de música, colecciones de fotos y redes sociales.
 - **Accesibilidad:** navegación con teclado, etiquetas para lectores de pantalla, buen contraste, botones de 44 px, diseño para teléfonos y un botón para pausar el movimiento.
