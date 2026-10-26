@@ -3,6 +3,7 @@
 // A link can also choose one: index.html?theme=alien
 import { tr } from './i18n.js?v=20261026151405';
 import { sfx } from './sound.js?v=20261026151405';
+import { setTrack } from './music.js?v=20261026151405';
 
 const root = document.documentElement;
 const select = document.getElementById('theme-select');
@@ -101,6 +102,7 @@ function tick() { show(cells[2], String(new Date().getSeconds()).padStart(2, '0'
 /* ---------- Switching ---------- */
 function setAlien(on) {
   root.classList.toggle('alien', on);
+  setTrack(on ? 'hunt' : 'haze');
   if (on) {
     glyphifyAll();
     watcher.observe(document.body, { subtree: true, childList: true, characterData: true });
