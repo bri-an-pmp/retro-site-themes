@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src https://api.github.com; frame-src https://open.spotify.com https://bandcamp.com https://embed.music.apple.com https://www.youtube-nocookie.com https://w.soundcloud.com; base-uri 'self'; form-action 'none'">
+  <!-- EDIT: your name, a one-line description, and (once published) your site's address -->
+  <title>Your Name · Studio</title>
+  <meta name="description" content="Your Name: what you do, in one sentence. Music, code, photography and more.">
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="Your Name · Studio">
+  <meta property="og:description" content="What you do, in one sentence.">
+  <meta property="og:site_name" content="Your Name Studio">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#07080b">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="fonts.css?v=20261026145436">
+  <link rel="stylesheet" href="styles.css?v=20261026145436">
+  <script type="module" src="js/main.js?v=20261026145436"></script>
+</head>
+<body>
+  <a class="skip-link" href="#index" data-i18n="skip">Skip to main content</a>
+
+  <!-- Dusty amber "apartment view" that fades in from the Code section down -->
+  <div class="dust" aria-hidden="true">
+    <div class="dust-sky"></div>
+    <div class="dust-sun"></div>
+    <div class="dust-rays"></div>
+    <div class="dust-layer dust-far"></div>
+    <div class="dust-fog dust-fog-1"></div>
+    <div class="dust-layer dust-mid"></div>
+    <div class="dust-storm dust-storm-far"></div>
+    <div class="dust-fog dust-fog-2"></div>
+    <div class="dust-layer dust-near"></div>
+    <div class="dust-storm dust-storm-near"></div>
+    <div class="dust-gust"></div>
+    <div class="dust-gust dust-gust-2"></div>
+    <div class="dust-grain"></div>
+    <div class="dust-motes"></div>
+    <div class="dust-frame"></div>
+  </div>
+  <canvas class="rain" id="rain" aria-hidden="true"></canvas>
+  <!-- Thermal theme: heat-map filter, scan overlay, targeting dots, wrist readout (decorative) -->
+  <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <filter id="thermal-map" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0.3 0.55 0.15 0 0  0.3 0.55 0.15 0 0  0.3 0.55 0.15 0 0  0 0 0 1 0"/>
+      <feComponentTransfer>
+        <feFuncR type="gamma" amplitude="1.25" exponent="0.75" offset="0"/>
+        <feFuncG type="gamma" amplitude="1.25" exponent="0.75" offset="0"/>
+        <feFuncB type="gamma" amplitude="1.25" exponent="0.75" offset="0"/>
+      </feComponentTransfer>
+      <feComponentTransfer>
+        <feFuncR type="table" tableValues="0.02 0.12 0.4 0.8 1 1 1 1"/>
+        <feFuncG type="table" tableValues="0 0 0.02 0.08 0.35 0.65 0.9 1"/>
+        <feFuncB type="table" tableValues="0.12 0.4 0.55 0.3 0.04 0.05 0.35 0.95"/>
+      </feComponentTransfer>
+    </filter>
+  </svg>
+  <div class="hud" aria-hidden="true">
+    <div class="hud-scan"></div>
+    <div class="hud-sweep"></div>
+    <div class="hud-reticle"><i></i><i></i><i></i></div>
+    <div class="hud-gauntlet">
+      <span class="hud-label" data-i18n="hudScan">SCAN</span>
+      <span class="hud-glyphs" id="hud-depth"></span>
+      <span class="hud-heat"><i id="hud-heat-bar"></i></span>
+    </div>
+  </div>
+
+  <!-- Status bar -->
+  <header class="bar">
+    <p class="bar-readout">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="bar-id">SYS//0001</span>
+      <span class="bar-clock"><span data-i18n="local">LOCAL</span> <time id="clock">00:00:00</time></span>
+    </p>
+    <div class="bar-controls">
+      <button type="button" id="lang-toggle" class="bar-btn" lang="es">Español</button>
+      <button type="button" id="music-toggle" class="bar-btn" aria-pressed="false">
+        <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="music-label" data-i18n="musicOff">Soundtrack off</span>
+      </button>
+      <button type="button" id="motion-toggle" class="bar-btn" aria-pressed="false">
+        <span aria-hidden="true">◐</span>
+        <span class="motion-label" data-i18n="motionPause">Pause motion</span>
+      </button>
+      <button type="button" id="sound-toggle" class="bar-btn" aria-pressed="false">
+        <span aria-hidden="true">◌</span>
+        <span class="sound-label" data-i18n="soundOff">Effects off</span>
+      </button>
+      <label class="theme-pick">
+        <span class="sr-only" data-i18n="themeLabel">Theme</span>
+        <span aria-hidden="true" class="theme-icon">◎</span>
+        <select id="theme-select" class="bar-btn">
+          <option value="noir" data-i18n="themeNoir">Neon Noir</option>
+          <option value="thermal" data-i18n="themeThermal">Thermal</option>
+          <option value="zone" data-i18n="themeZone">16-Bit Zone</option>
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="top" class="hero" aria-labelledby="site-title">
+      <div class="haze" aria-hidden="true">
+        <div class="sun"></div>
+        <div class="searchlight sl-1"></div>
+        <div class="searchlight sl-2"></div>
+        <div class="city city-far" data-depth="3"></div>
+        <div class="mist mist-1"></div>
+        <div class="city city-back" data-depth="6"></div>
+        <div class="fog fog-1"></div>
+        <div class="smoke sm-1"></div>
+        <div class="smoke sm-2"></div>
+        <div class="city city-mid" data-depth="10"></div>
+        <div class="mist mist-2"></div>
+        <div class="smoke sm-3"></div>
+        <div class="city city-fore" data-depth="14"></div>
+        <div class="fog fog-2"></div>
+        <div class="smoke sm-4"></div>
+        <canvas class="spinners" id="spinners"></canvas>
+        <div class="city city-near" data-depth="20"></div>
+        <div class="holo"></div>
+        <div class="holo holo-blue"></div>
+      </div>
+      <p class="kana" aria-hidden="true">スタジオ</p>
+
+      <div class="hero-content">
+        <div class="archive" role="group" aria-labelledby="archive-title">
+          <div class="archive-scan" aria-hidden="true"></div>
+          <p class="archive-head">
+            <span class="archive-mark" aria-hidden="true"></span>
+            <span id="archive-title" data-i18n="archiveTitle">PERSONAL ARCHIVE</span>
+          </p>
+          <dl class="archive-rows">
+            <!-- EDIT: your name (both places) -->
+            <div><dt data-i18n="archiveSubject">SUBJECT</dt><dd><span class="sr-only">YOUR NAME</span><span class="type" aria-hidden="true" data-text="YOUR NAME"></span></dd></div>
+            <div><dt data-i18n="archiveRecord">RECORD</dt><dd><span class="sr-only" id="record-sr">2026-01-01</span><span class="type" id="record-date" aria-hidden="true" data-text="2026-01-01"></span></dd></div>
+            <div><dt data-i18n="archiveStatus">STATUS</dt><dd class="granted"><span class="sr-only" data-i18n="archiveGranted">ACCESS GRANTED</span><span class="type" aria-hidden="true" data-text-key="archiveGranted"></span></dd></div>
+          </dl>
+          <p class="archive-seq" id="archive-seq" aria-hidden="true"></p>
+        </div>
+        <h1 id="site-title" class="brand">
+          <span class="holo-wrap">
+            <span class="beam" aria-hidden="true"></span>
+            <!-- EDIT: your name (both places) -->
+            <span class="brand-name" data-text="YOUR NAME">YOUR NAME</span>
+            <span class="emitter" aria-hidden="true"></span>
+          </span>
+          <span class="brand-sub"><span class="rule" aria-hidden="true"></span>STUDIO<span class="rule" aria-hidden="true"></span></span>
+        </h1>
+        <nav class="tabs" aria-label="Sections" data-i18n-label="tabsLabel">
+          <a href="#career" data-file="career" data-i18n="tabCareer">Career</a>
+          <a href="#code" data-file="code" data-i18n="tabCode">Code</a>
+          <a href="#work" data-file="work" data-i18n="tabWork">Services</a>
+          <a href="#sound" data-file="sound" data-i18n="tabMusic">Music</a>
+          <a href="#memories" data-file="memories" data-i18n="tabPhoto">Photography</a>
+        </nav>
+        <div class="hero-actions">
+          <button type="button" class="btn btn-primary" id="enter" data-i18n="enter">ENTER</button>
+          <button type="button" class="btn btn-ghost" id="theme-play" aria-pressed="false">
+            <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span id="theme-play-label" data-i18n="playTheme">Play soundtrack</span>
+          </button>
+        </div>
+        <a class="biz-link" href="#work" data-file="work" data-i18n="bizLink">Want to work together?</a>
+      </div>
+    </section>
+
+    <!-- INDEX: one tile per section. Text lives in js/i18n.js -->
+    <section id="index" class="index" aria-labelledby="index-title">
+      <div class="section-head">
+        <p class="readout" data-i18n="indexReadout">// SELECT A FILE</p>
+        <h2 id="index-title" class="heading" tabindex="-1" data-i18n="indexTitle">INDEX</h2>
+      </div>
+      <ul class="file-grid">
+        <li><a class="file-card" href="#career" data-file="career">
+          <span class="fc-num">01</span>
+          <span class="fc-kana" aria-hidden="true">職歴</span>
+          <span class="fc-name" data-i18n="fileCareer">CAREER</span>
+          <span class="fc-sub" data-i18n="fileCareerSub">Resume and experience</span>
+        </a></li>
+        <li><a class="file-card" href="#code" data-file="code">
+          <span class="fc-num">02</span>
+          <span class="fc-kana" aria-hidden="true">符</span>
+          <span class="fc-name" data-i18n="fileCode">CODE</span>
+          <span class="fc-sub" data-i18n="fileCodeSub">Projects on GitHub</span>
+        </a></li>
+        <li><a class="file-card" href="#work" data-file="work">
+          <span class="fc-num">03</span>
+          <span class="fc-kana" aria-hidden="true">仕事</span>
+          <span class="fc-name" data-i18n="fileWork">SERVICES</span>
+          <span class="fc-sub" data-i18n="fileWorkSub">What I offer and how to hire me</span>
+        </a></li>
+        <li><a class="file-card" href="#sound" data-file="sound">
+          <span class="fc-num">04</span>
+          <span class="fc-kana" aria-hidden="true">音</span>
+          <span class="fc-name" data-i18n="fileSound">SOUND</span>
+          <span class="fc-sub" data-i18n="fileSoundSub">Music I make</span>
+        </a></li>
+        <li><a class="file-card" href="#memories" data-file="memories">
+          <span class="fc-num">05</span>
+          <span class="fc-kana" aria-hidden="true">記憶</span>
+          <span class="fc-name" data-i18n="fileMemories">MEMORIES</span>
+          <span class="fc-sub" data-i18n="fileMemoriesSub">Photography</span>
+        </a></li>
+        <li><a class="file-card" href="#social" data-file="social">
+          <span class="fc-num">06</span>
+          <span class="fc-kana" aria-hidden="true">信号</span>
+          <span class="fc-name" data-i18n="fileSocial">SOCIAL</span>
+          <span class="fc-sub" data-i18n="fileSocialSub">Where to find me</span>
+        </a></li>
+      </ul>
+    </section>
+
+    <!-- 01 CAREER: replace assets/portrait.svg with your photo (square works best) -->
+    <section id="career" class="file file-career" aria-labelledby="career-title">
+      <div class="section-head">
+        <p class="readout">FILE 01 //</p>
+        <h2 id="career-title" class="heading" tabindex="-1" data-i18n="fileCareer">CAREER</h2>
+      </div>
+      <div class="panel dossier">
+        <div class="id-card">
+          <p class="id-file">SUBJECT FILE // 0001</p>
+          <figure class="id-photo">
+            <img src="assets/portrait.svg" width="400" height="400" alt="Portrait" data-i18n-alt="resumePhotoAlt" loading="lazy">
+            <span class="id-reticle" aria-hidden="true"></span>
+          </figure>
+          <h3 class="id-name">Your<br>Name</h3>
+          <p class="id-title" data-i18n="resumeRole">Your job title</p>
+          <dl class="id-meta">
+            <div><dt data-i18n="resumeBase">BASE</dt><dd>Your City</dd></div>
+            <div><dt data-i18n="resumeLangs">LANGUAGES</dt><dd>English · Español</dd></div>
+            <div><dt data-i18n="resumeFocus">FOCUS</dt><dd data-i18n="resumeFocusVal">Three things you're known for</dd></div>
+          </dl>
+          <div class="id-actions">
+            <!-- EDIT: put your resume in assets/ and link it here, or remove this button -->
+            <a class="btn btn-primary" href="#career"><span data-i18n="resumeDownload">Download resume (PDF)</span> <span aria-hidden="true">↓</span></a>
+            <a class="btn btn-ghost" href="https://example.com" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+
+        <div class="dossier-main">
+          <p class="dossier-summary" data-i18n="resumeSummary">Two or three sentences about what you do, who you do it for and what makes your work different.</p>
+
+          <ul class="stats">
+            <li><span class="stat-num">10</span><span class="stat-label" data-i18n="resumeStat1">years of experience</span></li>
+            <li><span class="stat-num">25</span><span class="stat-label" data-i18n="resumeStat2">projects shipped</span></li>
+            <li><span class="stat-num">2</span><span class="stat-label" data-i18n="resumeStat3">languages</span></li>
+          </ul>
+
+          <h4 class="dossier-label" data-i18n="resumeExperience">EXPERIENCE</h4>
+          <ol class="xp">
+            <li class="xp-item">
+              <span class="xp-date">2022 — <span data-i18n="resumeNow">NOW</span></span>
+              <div><p class="xp-org">Company One</p><p class="xp-role" data-i18n="resumeJob1">Your current role · one line about what you do there</p></div>
+            </li>
+            <li class="xp-item">
+              <span class="xp-date">2018 — 2022</span>
+              <div><p class="xp-org">Company Two</p><p class="xp-role" data-i18n="resumeJob2">Previous role · one line about a result you're proud of</p></div>
+            </li>
+          </ol>
+
+          <h4 class="dossier-label" data-i18n="resumeSkills">SKILLS</h4>
+          <ul class="chips">
+            <li>Skill one</li><li>Skill two</li><li>Skill three</li><li>Skill four</li><li>Skill five</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 CODE: set GITHUB_USER at the top of js/main.js and your projects appear here -->
+    <section id="code" class="file file-code" aria-labelledby="code-title">
+      <div class="section-head">
+        <p class="readout">FILE 02 //</p>
+        <h2 id="code-title" class="heading" tabindex="-1" data-i18n="fileCode">CODE</h2>
+      </div>
+      <div class="panel">
+        <p class="lede" data-i18n="codeIntro">Things I build, pulled live from my GitHub.</p>
+        <p class="status-line" id="repo-status" data-i18n="loadingRepos">Loading projects…</p>
+        <ul class="repo-grid" id="repo-grid"></ul>
+        <a class="btn btn-ghost" id="github-link" href="https://github.com/" target="_blank" rel="noopener"><span data-i18n="allGithub">See everything on GitHub</span> <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <!-- 03 SERVICES -->
+    <section id="work" class="file file-translation" aria-labelledby="work-title">
+      <div class="section-head">
+        <p class="readout">FILE 03 //</p>
+        <h2 id="work-title" class="heading" tabindex="-1" data-i18n="fileWork">SERVICES</h2>
+      </div>
+      <div class="panel">
+        <h3 class="sub-heading"><span class="tag" data-i18n="company">COMPANY</span> Your Business</h3>
+        <p class="lede" data-i18n="workIntro">One sentence about the services you offer and who they're for.</p>
+        <ul class="services">
+          <li class="service">
+            <span class="service-code" aria-hidden="true">01</span>
+            <h4 data-i18n="svc1">First service</h4>
+            <p data-i18n="svc1Text">What it is and why someone would want it.</p>
+          </li>
+          <li class="service">
+            <span class="service-code" aria-hidden="true">02</span>
+            <h4 data-i18n="svc2">Second service</h4>
+            <p data-i18n="svc2Text">What it is and why someone would want it.</p>
+          </li>
+          <li class="service">
+            <span class="service-code" aria-hidden="true">03</span>
+            <h4 data-i18n="svc3">Third service</h4>
+            <p data-i18n="svc3Text">What it is and why someone would want it.</p>
+          </li>
+        </ul>
+        <a class="btn btn-primary" href="https://example.com" target="_blank" rel="noopener"><span data-i18n="quote">Request a quote</span> <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <!-- 04 SOUND: links to your music. Embedded players: see EMBEDS in js/main.js -->
+    <section id="sound" class="file file-sound" aria-labelledby="sound-title">
+      <div class="section-head">
+        <p class="readout">FILE 04 //</p>
+        <h2 id="sound-title" class="heading" tabindex="-1" data-i18n="fileSound">SOUND</h2>
+      </div>
+      <div class="panel">
+        <h3 class="sub-heading"><span class="tag" data-i18n="solo">SOLO</span> Your Artist Name</h3>
+        <p class="lede" data-i18n="musicIntro">My own music. Choose a platform to listen.</p>
+        <div class="player-grid">
+          <article class="player">
+            <h4>Spotify</h4>
+            <div class="player-slot" data-embed="spotify"></div>
+            <a class="ext-link" href="https://example.com" target="_blank" rel="noopener"><span data-i18n="openIn">Open in</span> Spotify <span aria-hidden="true">↗</span></a>
+          </article>
+          <article class="player">
+            <h4>Bandcamp</h4>
+            <div class="player-slot" data-embed="bandcamp"></div>
+            <a class="ext-link" href="https://example.com" target="_blank" rel="noopener"><span data-i18n="openIn">Open in</span> Bandcamp <span aria-hidden="true">↗</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 MEMORIES: photo collections are listed in js/albums.js -->
+    <section id="memories" class="file file-memories" aria-labelledby="memories-title">
+      <div class="section-head">
+        <p class="readout">FILE 05 //</p>
+        <h2 id="memories-title" class="heading" tabindex="-1" data-i18n="fileMemories">MEMORIES</h2>
+      </div>
+      <div class="panel">
+        <p class="lede" data-i18n="photoIntro">Collections of my photography. Open one to see every photo.</p>
+        <ul class="photo-grid" id="photo-grid"></ul>
+      </div>
+    </section>
+
+    <!-- 06 SOCIAL -->
+    <section id="social" class="file file-social" aria-labelledby="social-title">
+      <div class="section-head">
+        <p class="readout">FILE 06 //</p>
+        <h2 id="social-title" class="heading" tabindex="-1" data-i18n="fileSocial">SOCIAL</h2>
+      </div>
+      <div class="panel">
+        <p class="lede" data-i18n="socialIntro">Follow along for videos, photos and what I’m working on.</p>
+        <ul class="social-grid">
+          <li><a class="social-card" href="https://example.com" target="_blank" rel="noopener">
+            <span class="social-net">Instagram</span>
+            <span class="social-handle">@yourhandle</span>
+            <span class="social-cta"><span data-i18n="socialFollow">Follow</span> <span aria-hidden="true">↗</span></span>
+          </a></li>
+          <li><a class="social-card" href="https://example.com" target="_blank" rel="noopener">
+            <span class="social-net">YouTube</span>
+            <span class="social-handle">@yourhandle</span>
+            <span class="social-cta"><span data-i18n="socialWatch">Watch</span> <span aria-hidden="true">↗</span></span>
+          </a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="btn btn-ghost" href="#top" data-i18n="backTop">↑ Back to top</a>
+    <ul class="footer-links">
+      <li><a href="https://example.com" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://example.com" target="_blank" rel="noopener">LinkedIn</a></li>
+      <li><a href="https://example.com" target="_blank" rel="noopener">Instagram</a></li>
+    </ul>
+    <p class="privacy" data-i18n="privacy">Privacy: this site uses no cookies, analytics or tracking.</p>
+    <p class="copyright">© <span id="year">2026</span> Your Name</p>
+    <p class="credit">Theme: <a href="https://github.com/bri-an-pmp/retro-site-themes" target="_blank" rel="noopener">Retro Site Themes</a></p>
+  </footer>
+
+  <!-- File-opening transition (visual only) -->
+  <div class="access" id="access" aria-hidden="true">
+    <div class="access-scan"></div>
+    <p class="access-text"><span data-i18n="accessing">ACCESSING</span> <span id="access-file"></span><span class="caret">▌</span></p>
+  </div>
+
+  <!-- Photo gallery -->
+  <dialog class="gallery" id="gallery" aria-labelledby="gallery-title">
+    <div class="gal-bar">
+      <div class="gal-heading">
+        <p class="readout" id="gal-count"></p>
+        <h2 id="gallery-title"></h2>
+      </div>
+      <div class="gal-actions">
+        <button type="button" class="bar-btn" id="gal-toggle"></button>
+        <button type="button" class="bar-btn gal-close" id="gal-close"><span aria-hidden="true">✕</span></button>
+      </div>
+    </div>
+    <ul class="gal-grid" id="gal-grid"></ul>
+    <div class="viewer" id="viewer" hidden>
+      <div class="carousel-wrap">
+        <div class="carousel" id="carousel" tabindex="0" aria-roledescription="carousel">
+          <div class="track" id="track"></div>
+        </div>
+        <button type="button" class="viewer-nav viewer-prev" id="viewer-prev"><span aria-hidden="true">‹</span></button>
+        <button type="button" class="viewer-nav viewer-next" id="viewer-next"><span aria-hidden="true">›</span></button>
+      </div>
+      <p class="viewer-caption"><span class="readout" id="viewer-pos"></span><span id="viewer-cap"></span></p>
+      <ul class="filmstrip" id="filmstrip"></ul>
+    </div>
+  </dialog>
+
+  <p class="sr-only" id="status" aria-live="polite"></p>
+</body>
+</html>

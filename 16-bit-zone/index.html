@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src https://api.github.com; frame-src https://open.spotify.com https://embed.music.apple.com https://www.youtube-nocookie.com https://w.soundcloud.com; base-uri 'self'; form-action 'none'">
+  <!-- EDIT: your site name and a one-line description (shown in search results and browser tabs) -->
+  <title>Your Name Studio</title>
+  <meta name="description" content="Your Name Studio: music, projects, photography and how to get in touch.">
+  <meta name="theme-color" content="#1840b0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#zones" data-i18n="skip">Skip to main content</a>
+
+  <!-- On-screen score display -->
+  <header class="hud">
+    <dl class="hud-stats">
+      <div><dt data-i18n="hudTime">TIME</dt><dd id="hud-time">0:00</dd></div>
+      <div><dt data-i18n="hudRecords">RECORDS</dt><dd id="hud-records">0</dd></div>
+    </dl>
+    <div class="hud-controls">
+      <button type="button" id="lang-toggle" class="hud-btn" lang="es">Español</button>
+      <button type="button" id="music-toggle" class="hud-btn" aria-pressed="false">
+        <span aria-hidden="true">♫</span> <span class="music-label" data-i18n="musicOff">Music off</span>
+      </button>
+      <button type="button" id="sound-toggle" class="hud-btn" aria-pressed="false">
+        <span aria-hidden="true">🔈</span> <span class="sound-label" data-i18n="soundOff">Sound off</span>
+      </button>
+      <label class="theme-pick">
+        <span class="sr-only" data-i18n="siteTheme">Theme</span>
+        <select id="theme-select" class="hud-btn">
+          <option value="noir" data-i18n="themeNoir">Neon Noir</option>
+          <option value="thermal" data-i18n="themeThermal">Thermal</option>
+          <option value="zone" data-i18n="themeZone" selected>16-Bit Zone</option>
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <main>
+    <!-- TITLE SCREEN -->
+    <section id="title" class="title-screen" aria-labelledby="site-title">
+      <div class="scene" aria-hidden="true">
+        <div class="layer sky"></div>
+        <div class="layer clouds"></div>
+        <div class="layer mountains"></div>
+        <div class="layer water"></div>
+        <div class="layer hills"></div>
+        <div class="layer ground"></div>
+      </div>
+
+      <div class="title-content">
+        <div class="emblem" aria-hidden="true"></div>
+        <!-- EDIT: your name (also in the title card and footer at the bottom of this file) -->
+        <h1 id="site-title" class="logo">
+          <span class="logo-name">YOUR NAME</span>
+          <span class="logo-ribbon">STUDIO</span>
+        </h1>
+        <!-- The tagline and every other phrase with data-i18n="..." is edited in js/i18n.js (English and Spanish) -->
+        <p class="tagline" data-i18n="tagline">Music · Projects · Photography · Contact</p>
+        <button type="button" class="press-start" id="press-start" data-i18n="pressStart">PRESS START</button>
+        <button type="button" class="theme-btn" id="theme-play" aria-pressed="false">
+          <span aria-hidden="true">♫</span> <span id="theme-play-label" data-i18n="playTheme">Play theme music</span>
+        </button>
+        <a class="contact-link" href="#contact" data-zone="contact" data-i18n="contactLink">Want to say hello? Go straight to Contact</a>
+      </div>
+
+      <div class="records" id="title-records"></div>
+    </section>
+
+    <!-- LEVEL SELECT: one card per zone. To add a zone, copy a card and a section below,
+         give it a new id, and add its name to ZONE_KEYS in js/main.js. -->
+    <section id="zones" class="level-select" aria-labelledby="zones-title">
+      <h2 id="zones-title" class="pixel-heading" tabindex="-1" data-i18n="selectZone">SELECT ZONE</h2>
+      <ul class="zone-grid">
+        <li><a class="zone-card zc-music" href="#music" data-zone="music">
+          <span class="zc-icon" aria-hidden="true">♫</span>
+          <span class="zc-name" data-i18n="zoneMusic">MUSIC ZONE</span>
+          <span class="zc-sub" data-i18n="zoneMusicSub">Albums, singles and side projects</span>
+        </a></li>
+        <li><a class="zone-card zc-code" href="#code" data-zone="code">
+          <span class="zc-icon" aria-hidden="true">&lt;/&gt;</span>
+          <span class="zc-name" data-i18n="zoneCode">CODE ZONE</span>
+          <span class="zc-sub" data-i18n="zoneCodeSub">Projects on GitHub</span>
+        </a></li>
+        <li><a class="zone-card zc-photo" href="#photo" data-zone="photo">
+          <span class="zc-icon" aria-hidden="true">◉</span>
+          <span class="zc-name" data-i18n="zonePhoto">PHOTO ZONE</span>
+          <span class="zc-sub" data-i18n="zonePhotoSub">Bonus stage: photography</span>
+        </a></li>
+        <li><a class="zone-card zc-contact" href="#contact" data-zone="contact">
+          <span class="zc-icon" aria-hidden="true">✉</span>
+          <span class="zc-name" data-i18n="zoneContact">CONTACT ZONE</span>
+          <span class="zc-sub" data-i18n="zoneContactSub">Email and social links</span>
+        </a></li>
+      </ul>
+    </section>
+
+    <!-- MUSIC ZONE: EDIT the "Open in" links here and the player addresses in EMBEDS (js/main.js) -->
+    <section id="music" class="zone zone-music" aria-labelledby="music-title">
+      <div class="zone-banner">
+        <h2 id="music-title" class="pixel-heading" tabindex="-1"><span data-i18n="zoneMusic">MUSIC ZONE</span></h2>
+      </div>
+      <div class="zone-body">
+        <div class="panel">
+          <h3 class="act-title"><span class="act-tag" data-i18n="act1">ACT 1</span> <span data-i18n="musicAct">Your Music</span></h3>
+          <p data-i18n="musicIntro">My own music. Pick a platform and press Load player to listen here, or open it in your favorite app.</p>
+          <div class="player-grid">
+            <article class="cart cart-spotify">
+              <h4>Spotify</h4>
+              <div class="player-slot" data-embed="spotify-main"></div>
+              <a class="ext-link" href="https://example.com" target="_blank" rel="noopener"><span data-i18n="openIn">Open in</span> Spotify ↗</a>
+            </article>
+            <article class="cart cart-apple">
+              <h4>Apple Music</h4>
+              <div class="player-slot" data-embed="apple"></div>
+              <a class="ext-link" href="https://example.com" target="_blank" rel="noopener"><span data-i18n="openIn">Open in</span> Apple Music ↗</a>
+            </article>
+            <article class="cart cart-youtube">
+              <h4>YouTube Music</h4>
+              <div class="player-slot" data-embed="youtube"></div>
+              <a class="ext-link" href="https://example.com" target="_blank" rel="noopener"><span data-i18n="openIn">Open in</span> YouTube ↗</a>
+            </article>
+            <article class="cart cart-soundcloud">
+              <h4>SoundCloud</h4>
+              <div class="player-slot" data-embed="soundcloud"></div>
+              <a class="ext-link" href="https://example.com" target="_blank" rel="noopener"><span data-i18n="openIn">Open in</span> SoundCloud ↗</a>
+            </article>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3 class="act-title"><span class="act-tag" data-i18n="act2">ACT 2</span> <span data-i18n="bandAct">Side Project</span></h3>
+          <p data-i18n="bandIntro">A band, duo or other project you are part of.</p>
+          <div class="player-grid player-grid-single">
+            <article class="cart cart-spotify">
+              <h4>Spotify</h4>
+              <div class="player-slot" data-embed="spotify-side"></div>
+              <a class="ext-link" href="https://example.com" target="_blank" rel="noopener"><span data-i18n="openIn">Open in</span> Spotify ↗</a>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CODE ZONE: projects load from GitHub; EDIT GITHUB_USER at the top of js/main.js -->
+    <section id="code" class="zone zone-code" aria-labelledby="code-title">
+      <div class="zone-banner">
+        <h2 id="code-title" class="pixel-heading" tabindex="-1"><span data-i18n="zoneCode">CODE ZONE</span></h2>
+      </div>
+      <div class="zone-body">
+        <div class="panel">
+          <h3 class="act-title"><span class="act-tag" data-i18n="act1">ACT 1</span> <span data-i18n="codeAct">Projects</span></h3>
+          <p data-i18n="codeIntro">Things I build, pulled live from my GitHub.</p>
+          <p class="status-line" id="repo-status" data-i18n="loadingRepos">Loading projects…</p>
+          <ul class="repo-grid" id="repo-grid"></ul>
+          <a class="btn" href="https://github.com/octocat" data-github-link target="_blank" rel="noopener"><span data-i18n="allGithub">See everything on GitHub</span> ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHOTO ZONE: empty frames for now; set PHOTO_PLACEHOLDERS in js/main.js -->
+    <section id="photo" class="zone zone-photo" aria-labelledby="photo-title">
+      <div class="zone-banner">
+        <h2 id="photo-title" class="pixel-heading" tabindex="-1"><span data-i18n="zonePhoto">PHOTO ZONE</span></h2>
+      </div>
+      <div class="zone-body">
+        <div class="panel">
+          <h3 class="act-title"><span class="act-tag" data-i18n="bonus">BONUS STAGE</span> <span data-i18n="photoAct">Photography</span></h3>
+          <p data-i18n="photoIntro">A gallery of my photography is on its way.</p>
+          <ul class="photo-grid" id="photo-grid"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT ZONE: EDIT the links below to your own email address and profiles -->
+    <section id="contact" class="zone zone-contact" aria-labelledby="contact-title">
+      <div class="zone-banner">
+        <h2 id="contact-title" class="pixel-heading" tabindex="-1"><span data-i18n="zoneContact">CONTACT ZONE</span></h2>
+      </div>
+      <div class="zone-body">
+        <div class="panel">
+          <h3 class="act-title"><span class="act-tag" data-i18n="act1">ACT 1</span> <span data-i18n="contactAct">Say hello</span></h3>
+          <p data-i18n="contactIntro">Questions, ideas or just want to say hi? Send me a message, or find me on social media.</p>
+          <ul class="powerups">
+            <li class="powerup"><span class="pu-box" aria-hidden="true">MAIL</span><a href="https://example.com" target="_blank" rel="noopener" data-i18n="contactEmail">Email me</a></li>
+            <li class="powerup"><span class="pu-box" aria-hidden="true">@</span><a href="https://example.com" target="_blank" rel="noopener" data-i18n="contactSocial">Follow me on social media</a></li>
+          </ul>
+          <a class="btn btn-gold" href="https://example.com" target="_blank" rel="noopener"><span data-i18n="contactButton">Send me a message</span> ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="continue" href="#title" data-i18n="continue">CONTINUE? ▲ Back to start</a>
+    <!-- EDIT: your links (one per site or profile) -->
+    <ul class="footer-links">
+      <li><a href="https://example.com" target="_blank" rel="noopener">Spotify</a></li>
+      <li><a href="https://example.com" target="_blank" rel="noopener">Apple Music</a></li>
+      <li><a href="https://example.com" target="_blank" rel="noopener">YouTube</a></li>
+      <li><a href="https://example.com" target="_blank" rel="noopener">SoundCloud</a></li>
+      <li><a href="https://github.com/octocat" data-github-link target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="#contact" data-zone="contact" data-i18n="footerContact">Contact</a></li>
+    </ul>
+    <p class="copyright">© <span id="year">2026</span> Your Name Studio</p>
+  </footer>
+
+  <!-- Zone title card (visual only) -->
+  <div class="title-card" id="title-card" aria-hidden="true">
+    <div class="tc-blue"></div>
+    <div class="tc-yellow"></div>
+    <div class="tc-red"><span>YOUR NAME STUDIO</span></div>
+    <div class="tc-text"><span class="tc-zone" id="tc-zone"></span><span class="tc-act" data-i18n="act1">ACT 1</span></div>
+  </div>
+
+  <p class="sr-only" id="status" aria-live="polite"></p>
+</body>
+</html>

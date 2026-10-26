@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'unsafe-inline'; base-uri 'self'; form-action 'none'">
+  <title>Retro Site Themes</title>
+  <meta name="description" content="Three free, ready-to-edit one-page website templates: Neon Noir, Thermal and 16-Bit Zone. English and Spanish, no build step, original art.">
+  <style>
+    :root { --bg: #08090d; --card: #11131a; --line: #2a2f3d; --text: #eef1f6; --dim: #a9b1c1; --red: #ff4058; --blue: #5cc8ff; --gold: #ffd447; color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: radial-gradient(ellipse at top, #1a1030, var(--bg) 60%); color: var(--text); font: 17px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width: 1160px; margin: 0 auto; padding: 56px 16px 72px; }
+    h1 { font-size: clamp(32px, 6vw, 56px); letter-spacing: .08em; margin: 0 0 8px; text-transform: uppercase; }
+    h1 span { color: var(--red); }
+    .lede { color: var(--dim); max-width: 62ch; margin: 0 0 8px; }
+    .lede[lang="es"] { font-size: 15px; }
+    .grid { list-style: none; padding: 0; margin: 36px 0 0; display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+    .card { background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--accent); display: flex; flex-direction: column; }
+    .card img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-bottom: 1px solid var(--line); }
+    .body { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    h2 { margin: 0; font-size: 22px; letter-spacing: .04em; }
+    .body p { margin: 0; color: var(--dim); }
+    .body p[lang="es"] { font-size: 15px; }
+    .links { margin-top: auto; padding-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; }
+    a.btn { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 14px; border: 1px solid var(--accent); color: var(--text); text-decoration: none; font-weight: 600; }
+    a.btn:hover, a.btn:focus-visible { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+    a:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+    .how { margin-top: 48px; padding: 22px; border: 1px solid var(--line); background: var(--card); }
+    .how h2 { margin-bottom: 10px; }
+    .how ol { margin: 0; padding-left: 1.3em; color: var(--dim); }
+    .how a { color: var(--blue); }
+    footer { margin-top: 36px; color: var(--dim); font-size: 14px; }
+    footer a { color: var(--blue); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Retro <span>Site</span> Themes</h1>
+    <p class="lede">Three free, ready-to-edit one-page websites for a portfolio or personal site. Each has an English/Spanish switch, a theme menu, an original soundtrack made in the browser, accessibility built in, and no build step: edit the text, upload, done.</p>
+    <p class="lede" lang="es">Tres sitios web de una página, gratuitos y listos para editar, para un portafolio o un sitio personal. Cada uno tiene botón de inglés/español, menú de temas, una banda sonora original creada en el navegador y accesibilidad incorporada, sin pasos de compilación: edite el texto, súbalo y listo.</p>
+
+    <ul class="grid">
+      <li class="card" style="--accent: var(--red)">
+        <img src="screenshots/noir.jpg" width="1280" height="900" alt="Neon Noir template: a glowing name over a rainy neon night city with searchlights">
+        <div class="body">
+          <h2>Neon Noir</h2>
+          <p>A rainy, neon-lit night city with searchlights, flying cars and a dusty amber apartment view further down the page.</p>
+          <p lang="es">Una ciudad nocturna lluviosa con luces de neón, reflectores, autos voladores y una vista ámbar polvorienta más abajo en la página.</p>
+          <div class="links"><a class="btn" href="neon-noir/">Open the demo</a></div>
+        </div>
+      </li>
+      <li class="card" style="--accent: #ff7a1f">
+        <img src="screenshots/thermal.jpg" width="1280" height="900" alt="Thermal theme: the same site seen in heat vision, with scan lines, glyph numerals and a wrist readout">
+        <div class="body">
+          <h2>Thermal</h2>
+          <p>Heat vision for Neon Noir: a heat-map filter over the scenery and photos, scan lines, a three-dot targeting laser, lock-on brackets and an original glyph alphabet for numbers.</p>
+          <p lang="es">Visión térmica para Neón Noir: filtro de mapa de calor sobre el paisaje y las fotos, líneas de escaneo, láser de tres puntos, corchetes que fijan el objetivo y un alfabeto de glifos original para los números.</p>
+          <div class="links"><a class="btn" href="neon-noir/?theme=thermal">Open the demo</a></div>
+        </div>
+      </li>
+      <li class="card" style="--accent: var(--gold)">
+        <img src="screenshots/16-bit-zone.jpg" width="1280" height="900" alt="16-Bit Zone template: pixel title screen with clouds, mountains, palm trees and checkered hills">
+        <div class="body">
+          <h2>16-Bit Zone</h2>
+          <p>A 16-bit console-game title screen: pixel lettering, scrolling clouds and hills, a score display, collectible gold records and chiptune-style music.</p>
+          <p lang="es">Una pantalla de título de videojuego de 16 bits: letras pixeladas, nubes y colinas en movimiento, marcador, discos de oro coleccionables y música de estilo chiptune.</p>
+          <div class="links"><a class="btn" href="16-bit-zone/">Open the demo</a></div>
+        </div>
+      </li>
+    </ul>
+
+    <section class="how" aria-labelledby="how-title">
+      <h2 id="how-title">Use one for your own site</h2>
+      <ol>
+        <li>Download this repository (<strong>Code → Download ZIP</strong>) or fork it on GitHub.</li>
+        <li>Keep the template folder you like (or both: their theme menus link to each other).</li>
+        <li>Edit the text in <code>index.html</code> and <code>js/i18n.js</code> (look for <code>EDIT:</code> comments), set your GitHub username at the top of <code>js/main.js</code>, and swap the placeholder images.</li>
+        <li>Publish it free with GitHub Pages. Step-by-step instructions are in the <a href="https://github.com/bri-an-pmp/retro-site-themes#readme">README</a>.</li>
+      </ol>
+    </section>
+
+    <footer>
+      <p>All artwork, music and glyphs are original. Code and art: MIT license. Fonts: SIL Open Font License and Apache 2.0 (see <code>licenses/</code>). Made by <a href="https://brianathey.studio">Brian Athey</a> with Claude Code.</p>
+    </footer>
+  </main>
+</body>
+</html>
