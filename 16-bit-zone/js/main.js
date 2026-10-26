@@ -331,9 +331,9 @@ document.querySelectorAll('[data-github-link]').forEach((a) => {
 refreshAll();
 loadRepos();
 
-/* ---------- Theme menu: switch to the Neon Noir theme (dark or Thermal) ---------- */
+/* ---------- Theme menu: switch to the Neon Noir template (Neon Noir or Alien) ---------- */
 // EDIT: if you keep only this theme, remove the <select id="theme-select"> in index.html too.
-const THEME_PAGES = { noir: '../neon-noir/', thermal: '../neon-noir/?theme=thermal' };
+const THEME_PAGES = { noir: '../neon-noir/', alien: '../neon-noir/?theme=alien' };
 const siteTheme = document.getElementById('theme-select');
 siteTheme.value = 'zone';
 siteTheme.addEventListener('change', () => {
