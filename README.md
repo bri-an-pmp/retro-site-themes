@@ -52,7 +52,7 @@ To preview on your computer, open Terminal in the template folder, run `python3 
 ## Inside the templates
 
 - **Neon Noir:** the skyline layers are SVGs drawn by `tools/city.py`, so you can regenerate them with different settings. Rain and flying cars are drawn on a canvas. The parallax responds to the mouse and to scrolling.
-- **Alien:** the machine background is `assets/machine.svg`, a tileable panel drawn by `tools/machine.py` (run it with a different number, e.g. `python3 tools/machine.py 12`, for a new layout). Photos get a red-and-black duotone filter (`#red-duotone` in `index.html`). The glyphs are drawn in `js/theme.js`: each digit is a slanted spine with four glowing bars, a long bar on the right for a 1 bit and a short bar on the left for a 0 bit. The targeting dots only appear with a mouse, and never when reduced motion is on.
+- **Alien:** the machine background is `assets/machine.svg`, a tileable panel drawn by `tools/machine.py` (run it with a different number, e.g. `python3 tools/machine.py 12`, for a new layout). Photos, app screenshots and the portrait keep their real colors. The glyphs are drawn in `js/theme.js`: each digit is a slanted spine with four glowing bars, a long bar on the right for a 1 bit and a short bar on the left for a 0 bit. The targeting dots only appear with a mouse, and never when reduced motion is on.
 - **16-Bit Zone:** the scenery is SVG and CSS, the soundtrack and effects use the Web Audio API, and the score display counts the gold records a visitor collects.
 
 ## Licenses
