@@ -13,7 +13,7 @@ Three free, ready-to-edit one-page websites for a portfolio or personal site: **
 
 - **English and Spanish.** A language button switches every word on the page. Spanish uses formal *usted*.
 - **A theme menu** at the top right. Neon Noir and Alien switch in place; 16-Bit Zone opens its own page.
-- **Original soundtracks**, made live in the browser (no audio files): a slow neo-noir score for Neon Noir, a tribal-percussion action score for Alien, and chiptune music for 16-Bit Zone, plus optional sound effects. Both are off until the visitor turns them on.
+- **Original soundtracks**, made live in the browser (no audio files): a slow neo-noir score for Neon Noir, an action-thriller score for Alien (suspense, then a military drum march with brass), and chiptune music for 16-Bit Zone, plus optional sound effects. Both are off until the visitor turns them on.
 - **Sections ready to fill in:** career/résumé, projects loaded live from GitHub, services, music links, photo collections and social links.
 - **Accessibility:** keyboard navigation, screen-reader labels, readable contrast, 44px tap targets, phone layouts, and a "Pause motion" button that respects the visitor's reduced-motion setting. In Alien, decorative glyphs sit beside the real numbers, so screen readers still hear them.
 - **Privacy:** no cookies, analytics or trackers. The fonts are stored in the template, not loaded from Google. Music players load only when the visitor presses **Load player**.
